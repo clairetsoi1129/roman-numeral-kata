@@ -1,10 +1,12 @@
 package com.techreturners.romanNumeral;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class RomanNumeral {
-    public int convertRomanToArabic(String roman){
+    public int convertNumeralToDigit(String numeral) {
+        if ("".equals(numeral.trim()) || !isValidNumeral(numeral))
+            throw new IllegalArgumentException("Input is not a valid roman numbers.");
+
         int number = 0;
         Map<String, Integer> map = new LinkedHashMap<>();
 
@@ -23,8 +25,8 @@ public class RomanNumeral {
         map.put("D", 500);
 
         for (String key : map.keySet()) {
-            while (roman.contains(key)) {
-                roman = roman.replaceFirst(key, "");
+            while (numeral.contains(key)) {
+                numeral = numeral.replaceFirst(key, "");
                 number += map.get(key);
             }
         }
@@ -32,12 +34,22 @@ public class RomanNumeral {
         return number;
     }
 
-    public String convertArabicToRoman(int number){
-        StringBuilder roman = new StringBuilder();
+    private boolean isValidNumeral(String numeral) {
+        List<String> validChars = Arrays.asList("I", "V", "X", "L", "C", "D", "M");
+        for (String c : validChars) {
+            numeral = numeral.replace(c, "");
+        }
+        return numeral.equals("");
+    }
+
+    public String convertDigitToNumeral(int number) {
+        if (!isValidDigit(number))
+            throw new IllegalArgumentException("Input is not a valid arabic numbers.");
+        StringBuilder numeral = new StringBuilder();
         Map<Integer, String> map = new LinkedHashMap<>();
 
         map.put(1000, "M");
-        map.put(900,"MC");
+        map.put(900, "MC");
         map.put(500, "D");
         map.put(400, "CD");
         map.put(100, "C");
@@ -52,10 +64,14 @@ public class RomanNumeral {
 
         for (Integer key : map.keySet()) {
             while (number > 0 && number - key >= 0) {
-                roman.append(map.get(key));
+                numeral.append(map.get(key));
                 number -= key;
             }
         }
-        return roman.toString();
+        return numeral.toString();
+    }
+
+    private boolean isValidDigit(int digit) {
+        return digit > 0 && digit < 3001;
     }
 }
