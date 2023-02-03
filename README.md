@@ -16,10 +16,10 @@ I need to handle the invalid case.
 
 
 ### Validation for digit to roman numeral:
-1. The input is out of range of 1-3000
-2. The input is a decimal number
-3. The input is a negative number
-4. The input is a alphabet
+1. The input is within range of 1-3000
+2. The input is not a decimal number
+3. The input is not a negative number
+4. The input is not a alphabet
 
 
 
