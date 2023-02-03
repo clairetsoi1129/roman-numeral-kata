@@ -8,12 +8,14 @@
 
 What if my assumption is wrong? 
 I need to handle the invalid case.
-### Error case for roman numeral to digit:
+### Validation for roman numeral to digit:
 1. Check the input only contains M/C/D/L/X/V/I
-2. The valid characters can only at most appear 3 times together
-3. The characters should follow the sequence, except CM/CD/XC/XL/IX/IV
+2. M, C, X, I at most appear 3 times together
+3. CM,CD,D,XC,XL,L,IX,IV,V can appear 0-1 times
+4. The characters should follow the sequence, except CM/CD/XC/XL/IX/IV
 
-### Error case for digit to roman numeral:
+
+### Validation for digit to roman numeral:
 1. The input is out of range of 1-3000
 2. The input is a decimal number
 3. The input is a negative number
