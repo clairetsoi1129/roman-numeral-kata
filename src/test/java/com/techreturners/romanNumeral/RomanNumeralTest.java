@@ -32,7 +32,7 @@ public class RomanNumeralTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/data.csv", numLinesToSkip = 1)
     void testDigitToNumeral(
-            String expected, int input) {
+            String expected, String input) {
         RomanNumeral rm = new RomanNumeral();
         String actualValue = rm.convertDigitToNumeral(input);
         assertEquals(expected, actualValue);
@@ -41,7 +41,7 @@ public class RomanNumeralTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/invalidDigit.csv", numLinesToSkip = 1)
     void testInvalidDigitThrowException(
-            int input) {
+            String input) {
         RomanNumeral rm = new RomanNumeral();
         Exception exception = assertThrows(IllegalArgumentException.class,
                 () -> rm.convertDigitToNumeral(input));

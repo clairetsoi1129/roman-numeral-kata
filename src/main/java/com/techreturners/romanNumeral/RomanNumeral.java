@@ -1,32 +1,35 @@
 package com.techreturners.romanNumeral;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class RomanNumeral {
-    public int convertNumeralToDigit(String numeral) {
-        if ("".equals(numeral.trim()) || !isValidNumeral(numeral))
+    public int convertNumeralToDigit(String input) {
+        if (!isValidRomanNumeral(input))
             throw new IllegalArgumentException("Input is not a valid roman numbers.");
 
         int number = 0;
+        // create a map to hold the roman chars and its values
         Map<String, Integer> map = new LinkedHashMap<>();
-
-        map.put("MC", 900);
-        map.put("CX", 90);
-        map.put("IX", 9);
+        map.put("CM", 900);
         map.put("CD", 400);
+        map.put("XC", 90);
         map.put("XL", 40);
+        map.put("IX", 9);
         map.put("IV", 4);
         map.put("M", 1000);
-        map.put("I", 1);
-        map.put("V", 5);
-        map.put("X", 10);
-        map.put("L", 50);
-        map.put("C", 100);
         map.put("D", 500);
+        map.put("C", 100);
+        map.put("L", 50);
+        map.put("X", 10);
+        map.put("V", 5);
+        map.put("I", 1);
 
+        // loop through the map and see if the input contains the chars,
+        // if yes, replace the first appeared chars in the input, and add the value to the result
         for (String key : map.keySet()) {
-            while (numeral.contains(key)) {
-                numeral = numeral.replaceFirst(key, "");
+            while (input.contains(key)) {
+                input = input.replaceFirst(key, "");
                 number += map.get(key);
             }
         }
@@ -34,17 +37,17 @@ public class RomanNumeral {
         return number;
     }
 
-    private boolean isValidNumeral(String numeral) {
-        List<String> validChars = Arrays.asList("I", "V", "X", "L", "C", "D", "M");
-        for (String c : validChars) {
-            numeral = numeral.replace(c, "");
-        }
-        return numeral.equals("");
+    private boolean isValidRomanNumeral(String input) {
+        //
+        String regex = "^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$";
+        return Pattern.compile(regex).matcher(input).matches();
     }
 
-    public String convertDigitToNumeral(int number) {
-        if (!isValidDigit(number))
+    public String convertDigitToNumeral(String input) {
+        int convertedInput = isValidInput(input);
+        if (convertedInput == -1)
             throw new IllegalArgumentException("Input is not a valid arabic numbers.");
+
         StringBuilder numeral = new StringBuilder();
         Map<Integer, String> map = new LinkedHashMap<>();
 
@@ -63,15 +66,23 @@ public class RomanNumeral {
         map.put(1, "I");
 
         for (Integer key : map.keySet()) {
-            while (number > 0 && number - key >= 0) {
+            while (convertedInput > 0 && convertedInput - key >= 0) {
                 numeral.append(map.get(key));
-                number -= key;
+                convertedInput -= key;
             }
         }
         return numeral.toString();
     }
 
-    private boolean isValidDigit(int digit) {
-        return digit > 0 && digit < 3001;
+    private int isValidInput(String input) {
+        int convertedInput = -1;
+        try {
+            convertedInput = Integer.parseInt(input);
+            if (convertedInput <= 0 || convertedInput > 3000)
+                convertedInput = -1;
+        } catch (NumberFormatException e) {
+            // do nothing
+        }
+        return convertedInput;
     }
 }
